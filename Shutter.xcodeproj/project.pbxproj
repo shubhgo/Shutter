@@ -18,6 +18,10 @@
 		5173810516CE612E00775555 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5173810416CE612E00775555 /* Default-568h@2x.png */; };
 		5173810816CE612E00775555 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5173810716CE612E00775555 /* ViewController.m */; };
 		5173810B16CE612E00775555 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5173810916CE612E00775555 /* ViewController.xib */; };
+		5173811416CE6F8D00775555 /* SGShutterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5173811316CE6F8D00775555 /* SGShutterView.m */; };
+		517C09B216DB6733005225FD /* SGTeethView.m in Sources */ = {isa = PBXBuildFile; fileRef = 517C09B116DB6733005225FD /* SGTeethView.m */; };
+		51EE201216D23D6C008956DF /* teeth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51EE201116D23D6C008956DF /* teeth@2x.png */; };
+		51EE201516D25D06008956DF /* frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51EE201416D25D06008956DF /* frame@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +41,12 @@
 		5173810616CE612E00775555 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		5173810716CE612E00775555 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		5173810A16CE612E00775555 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		5173811216CE6F8D00775555 /* SGShutterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGShutterView.h; sourceTree = "<group>"; };
+		5173811316CE6F8D00775555 /* SGShutterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGShutterView.m; sourceTree = "<group>"; };
+		517C09B016DB6733005225FD /* SGTeethView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGTeethView.h; sourceTree = "<group>"; };
+		517C09B116DB6733005225FD /* SGTeethView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGTeethView.m; sourceTree = "<group>"; };
+		51EE201116D23D6C008956DF /* teeth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "teeth@2x.png"; sourceTree = "<group>"; };
+		51EE201416D25D06008956DF /* frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +98,7 @@
 				5173810616CE612E00775555 /* ViewController.h */,
 				5173810716CE612E00775555 /* ViewController.m */,
 				5173810916CE612E00775555 /* ViewController.xib */,
+				5173811116CE6F4400775555 /* SGShutterView */,
 				517380F516CE612E00775555 /* Supporting Files */,
 			);
 			path = Shutter;
@@ -105,6 +116,27 @@
 				5173810416CE612E00775555 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5173811116CE6F4400775555 /* SGShutterView */ = {
+			isa = PBXGroup;
+			children = (
+				5173811216CE6F8D00775555 /* SGShutterView.h */,
+				5173811316CE6F8D00775555 /* SGShutterView.m */,
+				517C09B016DB6733005225FD /* SGTeethView.h */,
+				517C09B116DB6733005225FD /* SGTeethView.m */,
+				51EE201316D23D71008956DF /* images */,
+			);
+			name = SGShutterView;
+			sourceTree = "<group>";
+		};
+		51EE201316D23D71008956DF /* images */ = {
+			isa = PBXGroup;
+			children = (
+				51EE201416D25D06008956DF /* frame@2x.png */,
+				51EE201116D23D6C008956DF /* teeth@2x.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +195,8 @@
 				5173810316CE612E00775555 /* Default@2x.png in Resources */,
 				5173810516CE612E00775555 /* Default-568h@2x.png in Resources */,
 				5173810B16CE612E00775555 /* ViewController.xib in Resources */,
+				51EE201216D23D6C008956DF /* teeth@2x.png in Resources */,
+				51EE201516D25D06008956DF /* frame@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +210,8 @@
 				517380FB16CE612E00775555 /* main.m in Sources */,
 				517380FF16CE612E00775555 /* AppDelegate.m in Sources */,
 				5173810816CE612E00775555 /* ViewController.m in Sources */,
+				5173811416CE6F8D00775555 /* SGShutterView.m in Sources */,
+				517C09B216DB6733005225FD /* SGTeethView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +334,7 @@
 				5173811016CE612E00775555 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

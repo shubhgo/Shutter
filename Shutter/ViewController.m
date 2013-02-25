@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SGShutterView.h"
 
 @interface ViewController ()
 
@@ -17,7 +18,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+	
+    /* Shutter View */
+    SGShutterView *shutter = [[SGShutterView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    shutter.center = CGPointMake(160, 240);
+    [self.view addSubview:shutter];
 }
 
 - (void)didReceiveMemoryWarning
