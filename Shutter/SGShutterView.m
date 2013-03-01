@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSArray *stagesArray;
 @property (nonatomic, strong) UIView *container;
 @property float teethStartingAngle;//radians
-@property float deltaAngle;//radians
+@property float wheelStartAngle;//radians
 @property float totalRotation;//radians
 @end
 
@@ -171,7 +171,7 @@
     
     float dx = touchPoint.x - self.container.center.x;
 	float dy = touchPoint.y - self.container.center.y;
-    self.deltaAngle = atan2(dy,dx);
+    self.wheelStartAngle = atan2f(dy,dx);
     return YES;
 }
 
@@ -181,7 +181,7 @@
     float dx = pt.x  - self.container.center.x;
 	float dy = pt.y  - self.container.center.y;
 	float ang = atan2(dy,dx);
-    float angleDifference = ang - self.deltaAngle;
+    float angleDifference = ang - self.wheelStartAngle;
     
     CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH;
     NSArray *views = [_container subviews];
@@ -201,18 +201,31 @@
             im.layer.mask = maskLayer; 
         }
     }
+    
+    
+    if (angleDifference < [self degreesToRadians:-180])
+    {
+        angleDifference += [self degreesToRadians:360];
+    }
+    if (angleDifference > [self degreesToRadians:180]) {
+        angleDifference -= [self degreesToRadians:360];
+    }
+    NSLog(@"%f-> %f:  %f",[self radiansToDegrees:self.wheelStartAngle],[self radiansToDegrees:angleDifference],[self radiansToDegrees:self.totalRotation]);
+
+    self.wheelStartAngle = ang;
+    self.totalRotation += angleDifference;
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event
 {
-    CGPoint pt = [touch locationInView:self];
-    float dx = pt.x  - self.container.center.x;
-	float dy = pt.y  - self.container.center.y;
-	float ang = atan2(dy,dx);
-    float angleDifference = ang - self.deltaAngle;
-    _totalRotation += angleDifference;
-    NSLog(@"_totalRotation: %f",[self radiansToDegrees:_totalRotation]);
+//    CGPoint pt = [touch locationInView:self];
+//    float dx = pt.x  - self.container.center.x;
+//	float dy = pt.y  - self.container.center.y;
+//	float ang = atan2(dy,dx);
+//    float angleDifference = ang - self.wheelStartAngle;
+//    _totalRotation += angleDifference;
+//    NSLog(@"_totalRotation: %f",[self radiansToDegrees:_totalRotation]);
 }
 
 - (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
