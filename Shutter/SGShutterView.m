@@ -35,15 +35,6 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
 - (void) drawShutter
 {
     self.container = [[UIView alloc] initWithFrame:self.frame];
@@ -59,10 +50,7 @@
         tv.layer.position = [self positionForTeethAtIndex:i relativeToCenter:centerPoint];
         tv.transform = CGAffineTransformMakeRotation(angleSize*i + [self degreesToRadians:60.0]);
         tv.tag = i;
-        if (i!=4) {
-            [_container addSubview:tv];
-        }
-//        [_container addSubview:tv];
+        [_container addSubview:tv];
         _container.userInteractionEnabled = NO;
     }
     [self addSubview:_container];
@@ -155,8 +143,7 @@
 
 - (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
 {
-    NSLog(@"Theta: %f",theta);
-    float sinVal = sinf([self degreesToRadians:(60.0 - theta)]);
+    float sinVal = sinf([self degreesToRadians:(-theta)]);
     float constantVal = (2*TEETH_RADIUS)/sqrtf(3.0);
     float xTop = constantVal*sinVal;
     float xBot = xTop + TEETH_RADIUS*tanf([self degreesToRadians:30.0]);
@@ -185,15 +172,12 @@
     CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH;
     NSArray *views = [_container subviews];
     for (UIView *im in views)
-    {
-        
-//        NSLog(@"anchorPoint: image%i %f,%f ", im.tag, im.layer.anchorPoint.x, im.layer.anchorPoint.y);
-//        im.layer.anchorPoint = CGPointMake(0.5f, 1.00f);
+    {        
         im.transform = CGAffineTransformMakeRotation(angleDifference + im.tag*angleSize + _totalRotation + [self degreesToRadians:60.0]);
         if (im.tag == 5)
         {
             float theta = angleDifference + _totalRotation;
-            CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:([self radiansToDegrees:theta] + 60.0)];
+            CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:[self radiansToDegrees:theta]];
             im.layer.mask = maskLayer;
         }
     }
@@ -211,20 +195,4 @@
     _totalRotation += angleDifference;
 }
 
-//- (void)save
-//{
-//    NSLog(@"Save shutter image");
-//    
-//    NSArray *views = [_container subviews];
-//    for (UIView *im in views)
-//    {
-//        if (im.tag == 0)
-//        {
-//            UIImage *image = [Common imageFromView:im];
-//            [Common saveImageToDisk:image];
-//        }
-//    }
-//}
 @end
-
-// Diameter -116points
