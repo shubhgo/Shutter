@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface SGShutterView : UIControl
-@property (nonatomic, assign) NSRange teethRotationRange;
-@property (nonatomic, assign) NSInteger wheelRotationRange;
-@property (nonatomic, strong) NSArray *stagesArray;
-//- (void)save;
+- (id)  initWithFrame:(CGRect)frame
+   teethRotationRange:(NSRange)teethRotationRange
+   wheelRotationRange:(NSInteger)wheelRotationRange
+           stageArray:(NSArray *)stagesArray;
 @end

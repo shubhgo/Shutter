@@ -21,7 +21,14 @@
     [super viewDidLoad];
 	
     /* Shutter View */
-    self.shutter = [[SGShutterView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    NSArray *stages = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"9",@"10"];
+    NSRange teethRotationRange = NSMakeRange(20, 70); // 1)in degrees 2) 0degree closes the aperture completely
+    int wheelRotationRange = 720;
+    CGRect shutterFrame = CGRectMake(0, 0, 200, 200);
+    self.shutter = [[SGShutterView alloc] initWithFrame:shutterFrame
+                                     teethRotationRange:teethRotationRange
+                                     wheelRotationRange:wheelRotationRange
+                                             stageArray:stages];
     self.shutter.center = CGPointMake(160, 240);
     [self.view addSubview:self.shutter];
 }

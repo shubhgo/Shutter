@@ -17,12 +17,32 @@
 #define NUMBER_OF_TEETH 6
 
 @interface SGShutterView()
+@property (nonatomic, assign) NSRange teethRotationRange;
+@property (nonatomic, assign) NSInteger wheelRotationRange;
+@property (nonatomic, strong) NSArray *stagesArray;
 @property (nonatomic, strong) UIView *container;
 @property float deltaAngle;
 @property float totalRotation;
 @end
 
 @implementation SGShutterView
+
+- (id)  initWithFrame:(CGRect)frame
+   teethRotationRange:(NSRange)teethRotationRange
+   wheelRotationRange:(NSInteger)wheelRotationRange
+           stageArray:(NSArray *)stagesArray
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        _teethRotationRange = teethRotationRange;
+        _wheelRotationRange = wheelRotationRange;
+        _stagesArray = stagesArray;
+        self.backgroundColor = [UIColor blueColor];
+        [self drawShutter];
+    }
+    return self;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -141,26 +161,6 @@
     return YES;
 }
 
-- (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
-{
-    float sinVal = sinf([self degreesToRadians:(-theta)]);
-    float constantVal = (2*TEETH_RADIUS)/sqrtf(3.0);
-    float xTop = constantVal*sinVal;
-    float xBot = xTop + TEETH_RADIUS*tanf([self degreesToRadians:30.0]);
-    
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, xTop, 0);
-    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, 0);
-    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, TEETH_RADIUS);
-    CGPathAddLineToPoint(path, NULL, xBot, TEETH_RADIUS);
-    CGPathCloseSubpath(path);
-    
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    [maskLayer setPath:path];
-    CGPathRelease(path);
-    return maskLayer;
-}
-
 - (BOOL)continueTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event
 {
     CGPoint pt = [touch locationInView:self];
@@ -180,8 +180,13 @@
             CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:[self radiansToDegrees:theta]];
             im.layer.mask = maskLayer;
         }
+        if (im.tag == 4)
+        {
+            float theta = angleDifference + _totalRotation;
+            CAShapeLayer *maskLayer = [self maskLayerFor5thPetalWithTheta:[self radiansToDegrees:theta]];
+            im.layer.mask = maskLayer; 
+        }
     }
-    
     return YES;
 }
 
@@ -195,4 +200,43 @@
     _totalRotation += angleDifference;
 }
 
+- (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
+{
+    float sinVal = sinf([self degreesToRadians:(-theta)]);
+    float constantVal = (2*TEETH_RADIUS)/sqrtf(3.0f);
+    float xTop = constantVal*sinVal;
+    float xBot = xTop + TEETH_RADIUS/sqrtf(3.0f);
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, xTop, 0);
+    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, 0);
+    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, TEETH_RADIUS);
+    CGPathAddLineToPoint(path, NULL, xBot, TEETH_RADIUS);
+    CGPathCloseSubpath(path);
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    [maskLayer setPath:path];
+    CGPathRelease(path);
+    return maskLayer;
+}
+
+- (CAShapeLayer *)maskLayerFor5thPetalWithTheta:(float)theta
+{
+    float sinVal = sinf([self degreesToRadians:(-30-theta)]);
+    float constantVal = 2*TEETH_RADIUS;
+    float xTop = constantVal*sinVal;
+    float xBot = xTop + TEETH_RADIUS/sqrtf(3.0);
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, xTop, 0);
+    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, 0);
+    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, TEETH_RADIUS);
+    CGPathAddLineToPoint(path, NULL, xBot, TEETH_RADIUS);
+    CGPathCloseSubpath(path);
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    [maskLayer setPath:path];
+    CGPathRelease(path);
+    return maskLayer;
+}
 @end
