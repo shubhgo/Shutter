@@ -20,6 +20,7 @@
 {
     [super viewDidLoad];
 	
+    
     /* Shutter View */
     self.shutter = [[SGShutterView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
     self.shutter.center = CGPointMake(160, 240);
@@ -27,10 +28,21 @@
     
     /* add mask */
     // Create your mask layer
-    CALayer* maskLayer = [CALayer layer];
-    maskLayer.frame = CGRectMake(10,50,90,89);
-    maskLayer.contents = (__bridge id)[[UIImage imageNamed:@"teeth.png"] CGImage];
-    self.teeth.layer.mask = maskLayer;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, 0, 0);
+    CGPathAddLineToPoint(path, NULL, 90, 0);
+    CGPathAddLineToPoint(path, NULL, 90, 90);
+    CGPathAddLineToPoint(path, NULL, 0, 0);
+    CGPathCloseSubpath(path);
+    
+    
+//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//    [maskLayer setPath:path];
+//    CGPathRelease(path);
+//    self.teeth.layer.mask = maskLayer;
+    self.someView.hidden = YES;
+    self.teeth.hidden = YES;
+//    self.someView.layer.mask = maskLayer;
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,6 +53,6 @@
 
 - (IBAction)save:(id)sender
 {
-    [self.shutter save];
+//    [self.shutter save];
 }
 @end

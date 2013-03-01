@@ -59,7 +59,10 @@
         tv.layer.position = [self positionForTeethAtIndex:i relativeToCenter:centerPoint];
         tv.transform = CGAffineTransformMakeRotation(angleSize*i + [self degreesToRadians:60.0]);
         tv.tag = i;
-        [_container addSubview:tv];
+        if (i!=4) {
+            [_container addSubview:tv];
+        }
+//        [_container addSubview:tv];
         _container.userInteractionEnabled = NO;
     }
     [self addSubview:_container];
@@ -150,6 +153,27 @@
     return YES;
 }
 
+- (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
+{
+    NSLog(@"Theta: %f",theta);
+    float sinVal = sinf([self degreesToRadians:(60.0 - theta)]);
+    float constantVal = (2*TEETH_RADIUS)/sqrtf(3.0);
+    float xTop = constantVal*sinVal;
+    float xBot = xTop + TEETH_RADIUS*tanf([self degreesToRadians:30.0]);
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, xTop, 0);
+    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, 0);
+    CGPathAddLineToPoint(path, NULL, 2*TEETH_RADIUS, TEETH_RADIUS);
+    CGPathAddLineToPoint(path, NULL, xBot, TEETH_RADIUS);
+    CGPathCloseSubpath(path);
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    [maskLayer setPath:path];
+    CGPathRelease(path);
+    return maskLayer;
+}
+
 - (BOOL)continueTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event
 {
     CGPoint pt = [touch locationInView:self];
@@ -163,9 +187,15 @@
     for (UIView *im in views)
     {
         
-        NSLog(@"anchorPoint: image%i %f,%f ", im.tag, im.layer.anchorPoint.x, im.layer.anchorPoint.y);
+//        NSLog(@"anchorPoint: image%i %f,%f ", im.tag, im.layer.anchorPoint.x, im.layer.anchorPoint.y);
 //        im.layer.anchorPoint = CGPointMake(0.5f, 1.00f);
         im.transform = CGAffineTransformMakeRotation(angleDifference + im.tag*angleSize + _totalRotation + [self degreesToRadians:60.0]);
+        if (im.tag == 5)
+        {
+            float theta = angleDifference + _totalRotation;
+            CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:([self radiansToDegrees:theta] + 60.0)];
+            im.layer.mask = maskLayer;
+        }
     }
     
     return YES;
@@ -181,20 +211,20 @@
     _totalRotation += angleDifference;
 }
 
-- (void)save
-{
-    NSLog(@"Save shutter image");
-    
-    NSArray *views = [_container subviews];
-    for (UIView *im in views)
-    {
-        if (im.tag == 0)
-        {
-            UIImage *image = [Common imageFromView:im];
-            [Common saveImageToDisk:image];
-        }
-    }
-}
+//- (void)save
+//{
+//    NSLog(@"Save shutter image");
+//    
+//    NSArray *views = [_container subviews];
+//    for (UIView *im in views)
+//    {
+//        if (im.tag == 0)
+//        {
+//            UIImage *image = [Common imageFromView:im];
+//            [Common saveImageToDisk:image];
+//        }
+//    }
+//}
 @end
 
 // Diameter -116points
