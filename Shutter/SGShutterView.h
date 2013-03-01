@@ -12,4 +12,5 @@
 @property (nonatomic, assign) NSRange teethRotationRange;
 @property (nonatomic, assign) NSInteger wheelRotationRange;
 @property (nonatomic, strong) NSArray *stagesArray;
+- (void)save;
 @end

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SGTeethView.h"
 
 @interface ViewController : UIViewController
+@property (weak, nonatomic) IBOutlet SGTeethView *teeth;
+- (IBAction)save:(id)sender;
 
 @end

@@ -8,6 +8,8 @@
 
 #import "SGShutterView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SGTeethView.h"
+#import "Common.h"
 
 #define INNER_RADIUS 40.0f
 #define OUTER_RADIUS 100.0f
@@ -52,24 +54,18 @@
     
     for (int i = 0; i < NUMBER_OF_TEETH; i++)
     {
-        UIImageView *im = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"teeth.png"]];
-//        im.layer.anchorPoint = CGPointMake(0.0f, 0.135f);
-        im.layer.anchorPoint = CGPointMake(0.5f, 1.0f);
-        im.layer.position = [self positionForTeethAtIndex:i relativeToCenter:centerPoint];
-//        im.layer.anchorPoint = CGPointMake(1.0f, 0.135f);
-//        im.layer.position = CGPointMake(_container.bounds.size.width/2.0-_container.frame.origin.x,
-//                                        _container.bounds.size.height/2.0-_container.frame.origin.y);
-        NSLog(@"Position: %f,%f",im.layer.position.x,im.layer.position.y);
-        im.transform = CGAffineTransformMakeRotation(angleSize*i + [self degreesToRadians:60.0]);
-        im.tag = i;
-        [_container addSubview:im];
+        SGTeethView *tv = [[SGTeethView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 100.0f)];
+        tv.layer.anchorPoint = CGPointMake(0.0f, 0.0f);
+        tv.layer.position = [self positionForTeethAtIndex:i relativeToCenter:centerPoint];
+        tv.transform = CGAffineTransformMakeRotation(angleSize*i + [self degreesToRadians:60.0]);
+        tv.tag = i;
+        [_container addSubview:tv];
         _container.userInteractionEnabled = NO;
-        [self addSubview:_container];
     }
-    
-//    UIImageView *bg = [[UIImageView alloc] initWithFrame:self.frame];
-//    bg.image = [UIImage imageNamed:@"frame.png"];
-//    [self addSubview:bg];
+    [self addSubview:_container];
+    UIImageView *bg = [[UIImageView alloc] initWithFrame:self.frame];
+    bg.image = [UIImage imageNamed:@"frame.png"];
+    [self addSubview:bg];
 }
 
 - (CGPoint) positionForTeethAtIndex:(int)index relativeToCenter:(CGPoint) center
@@ -164,7 +160,7 @@
     
     CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH;
     NSArray *views = [_container subviews];
-    for (UIImageView *im in views)
+    for (UIView *im in views)
     {
         
         NSLog(@"anchorPoint: image%i %f,%f ", im.tag, im.layer.anchorPoint.x, im.layer.anchorPoint.y);
@@ -183,6 +179,21 @@
 	float ang = atan2(dy,dx);
     float angleDifference = self.deltaAngle - ang;
     _totalRotation += angleDifference;
+}
+
+- (void)save
+{
+    NSLog(@"Save shutter image");
+    
+    NSArray *views = [_container subviews];
+    for (UIView *im in views)
+    {
+        if (im.tag == 0)
+        {
+            UIImage *image = [Common imageFromView:im];
+            [Common saveImageToDisk:image];
+        }
+    }
 }
 @end
 
