@@ -22,7 +22,7 @@
 	
     /* Shutter View */
     NSArray *stages = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"9",@"10"];
-    NSRange teethRotationRange = NSMakeRange(20, 70); // 1)in degrees 2) 0degree closes the aperture completely
+    NSRange teethRotationRange = NSMakeRange(5, 70); // 1)in degrees 2) 0degree closes the aperture completely
     int wheelRotationRange = 720;
     CGRect shutterFrame = CGRectMake(0, 0, 200, 200);
     self.shutter = [[SGShutterView alloc] initWithFrame:shutterFrame

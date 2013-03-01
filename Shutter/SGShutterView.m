@@ -17,12 +17,13 @@
 #define NUMBER_OF_TEETH 6
 
 @interface SGShutterView()
-@property (nonatomic, assign) NSRange teethRotationRange;
-@property (nonatomic, assign) NSInteger wheelRotationRange;
+@property (nonatomic, assign) NSRange teethRotationRange;//degrees
+@property (nonatomic, assign) NSInteger wheelRotationRange;//degrees
 @property (nonatomic, strong) NSArray *stagesArray;
 @property (nonatomic, strong) UIView *container;
-@property float deltaAngle;
-@property float totalRotation;
+@property float teethStartingAngle;//radians
+@property float deltaAngle;//radians
+@property float totalRotation;//radians
 @end
 
 @implementation SGShutterView
@@ -38,6 +39,7 @@
         _teethRotationRange = teethRotationRange;
         _wheelRotationRange = wheelRotationRange;
         _stagesArray = stagesArray;
+        _teethStartingAngle = [self degreesToRadians:((float) teethRotationRange.location)];
         self.backgroundColor = [UIColor blueColor];
         [self drawShutter];
     }
@@ -58,7 +60,7 @@
 - (void) drawShutter
 {
     self.container = [[UIView alloc] initWithFrame:self.frame];
-    CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH;
+    CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH; // radians
     CGPoint centerPoint = CGPointMake(_container.bounds.size.width/2.0-_container.frame.origin.x,
                                       _container.bounds.size.height/2.0-_container.frame.origin.y);
     self.totalRotation = 0.0;
@@ -68,8 +70,21 @@
         SGTeethView *tv = [[SGTeethView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 100.0f)];
         tv.layer.anchorPoint = CGPointMake(0.0f, 0.0f);
         tv.layer.position = [self positionForTeethAtIndex:i relativeToCenter:centerPoint];
-        tv.transform = CGAffineTransformMakeRotation(angleSize*i + [self degreesToRadians:60.0]);
+        tv.transform = CGAffineTransformMakeRotation(angleSize*i + _teethStartingAngle);
         tv.tag = i;
+        if (i == 5)
+        {
+            float theta = _teethStartingAngle;
+            CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:[self radiansToDegrees:theta]];
+            tv.layer.mask = maskLayer;
+        }
+        if (i == 4)
+        {
+            float theta = _teethStartingAngle;
+            CAShapeLayer *maskLayer = [self maskLayerFor5thPetalWithTheta:[self radiansToDegrees:theta]];
+            tv.layer.mask = maskLayer;
+        }
+
         [_container addSubview:tv];
         _container.userInteractionEnabled = NO;
     }
@@ -157,7 +172,6 @@
     float dx = touchPoint.x - self.container.center.x;
 	float dy = touchPoint.y - self.container.center.y;
     self.deltaAngle = atan2(dy,dx);
-    
     return YES;
 }
 
@@ -167,22 +181,22 @@
     float dx = pt.x  - self.container.center.x;
 	float dy = pt.y  - self.container.center.y;
 	float ang = atan2(dy,dx);
-    float angleDifference = self.deltaAngle - ang;
+    float angleDifference = ang - self.deltaAngle;
     
     CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH;
     NSArray *views = [_container subviews];
     for (UIView *im in views)
     {        
-        im.transform = CGAffineTransformMakeRotation(angleDifference + im.tag*angleSize + _totalRotation + [self degreesToRadians:60.0]);
+        im.transform = CGAffineTransformMakeRotation(angleDifference + im.tag*angleSize + _totalRotation + _teethStartingAngle);
         if (im.tag == 5)
         {
-            float theta = angleDifference + _totalRotation;
+            float theta = angleDifference + _totalRotation + _teethStartingAngle;
             CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:[self radiansToDegrees:theta]];
             im.layer.mask = maskLayer;
         }
         if (im.tag == 4)
         {
-            float theta = angleDifference + _totalRotation;
+            float theta = angleDifference + _totalRotation + _teethStartingAngle;
             CAShapeLayer *maskLayer = [self maskLayerFor5thPetalWithTheta:[self radiansToDegrees:theta]];
             im.layer.mask = maskLayer; 
         }
@@ -196,13 +210,14 @@
     float dx = pt.x  - self.container.center.x;
 	float dy = pt.y  - self.container.center.y;
 	float ang = atan2(dy,dx);
-    float angleDifference = self.deltaAngle - ang;
+    float angleDifference = ang - self.deltaAngle;
     _totalRotation += angleDifference;
+    NSLog(@"_totalRotation: %f",[self radiansToDegrees:_totalRotation]);
 }
 
 - (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
 {
-    float sinVal = sinf([self degreesToRadians:(-theta)]);
+    float sinVal = sinf([self degreesToRadians:(60.0f-theta)]);
     float constantVal = (2*TEETH_RADIUS)/sqrtf(3.0f);
     float xTop = constantVal*sinVal;
     float xBot = xTop + TEETH_RADIUS/sqrtf(3.0f);
@@ -222,7 +237,7 @@
 
 - (CAShapeLayer *)maskLayerFor5thPetalWithTheta:(float)theta
 {
-    float sinVal = sinf([self degreesToRadians:(-30-theta)]);
+    float sinVal = sinf([self degreesToRadians:(30.0-theta)]);
     float constantVal = 2*TEETH_RADIUS;
     float xTop = constantVal*sinVal;
     float xBot = xTop + TEETH_RADIUS/sqrtf(3.0);
