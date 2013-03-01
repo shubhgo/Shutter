@@ -165,7 +165,6 @@
     
     if (dist < INNER_RADIUS || dist > OUTER_RADIUS)
     {
-        // forcing a tap to be on the ferrule
         return NO;
     }
     
@@ -182,6 +181,23 @@
 	float dy = pt.y  - self.container.center.y;
 	float ang = atan2(dy,dx);
     float angleDifference = ang - self.wheelStartAngle;
+    
+    if (angleDifference < [self degreesToRadians:-180])
+    {
+        angleDifference += [self degreesToRadians:360];
+    }
+    if (angleDifference > [self degreesToRadians:180]) {
+        angleDifference -= [self degreesToRadians:360];
+    }
+    
+    /* should not go outside range */
+    float totalDegrees = [self radiansToDegrees:(self.totalRotation + angleDifference)];
+    if ((0 >= totalDegrees) || ((float)self.wheelRotationRange <= totalDegrees))
+    {
+        self.wheelStartAngle = ang;
+//        NSLog(@"should not go outside range");
+        return YES;
+    }
     
     CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH;
     NSArray *views = [_container subviews];
@@ -201,17 +217,7 @@
             im.layer.mask = maskLayer; 
         }
     }
-    
-    
-    if (angleDifference < [self degreesToRadians:-180])
-    {
-        angleDifference += [self degreesToRadians:360];
-    }
-    if (angleDifference > [self degreesToRadians:180]) {
-        angleDifference -= [self degreesToRadians:360];
-    }
-    NSLog(@"%f-> %f:  %f",[self radiansToDegrees:self.wheelStartAngle],[self radiansToDegrees:angleDifference],[self radiansToDegrees:self.totalRotation]);
-
+//    NSLog(@"%f-> %f:  %f",[self radiansToDegrees:self.wheelStartAngle],[self radiansToDegrees:angleDifference],[self radiansToDegrees:self.totalRotation]);
     self.wheelStartAngle = ang;
     self.totalRotation += angleDifference;
     return YES;
