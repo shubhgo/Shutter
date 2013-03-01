@@ -24,6 +24,7 @@
 @property float teethStartingAngle;//radians
 @property float wheelStartAngle;//radians
 @property float totalRotation;//radians
+@property float teethRotationFactor;//ratio
 @end
 
 @implementation SGShutterView
@@ -40,6 +41,7 @@
         _wheelRotationRange = wheelRotationRange;
         _stagesArray = stagesArray;
         _teethStartingAngle = [self degreesToRadians:((float) teethRotationRange.location)];
+        _teethRotationFactor = (float)teethRotationRange.length/(float)wheelRotationRange;
         self.backgroundColor = [UIColor blueColor];
         [self drawShutter];
     }
@@ -195,29 +197,26 @@
     if ((0 >= totalDegrees) || ((float)self.wheelRotationRange <= totalDegrees))
     {
         self.wheelStartAngle = ang;
-//        NSLog(@"should not go outside range");
         return YES;
     }
     
     CGFloat angleSize = 2*M_PI/NUMBER_OF_TEETH;
     NSArray *views = [_container subviews];
     for (UIView *im in views)
-    {        
-        im.transform = CGAffineTransformMakeRotation(angleDifference + im.tag*angleSize + _totalRotation + _teethStartingAngle);
+    {
+        float teethRotationAngle = (angleDifference + _totalRotation)*_teethRotationFactor + _teethStartingAngle;
+        im.transform = CGAffineTransformMakeRotation(teethRotationAngle + im.tag*angleSize );
         if (im.tag == 5)
         {
-            float theta = angleDifference + _totalRotation + _teethStartingAngle;
-            CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:[self radiansToDegrees:theta]];
+            CAShapeLayer *maskLayer = [self maskLayerFor6thPetalWithTheta:[self radiansToDegrees:teethRotationAngle]];
             im.layer.mask = maskLayer;
         }
         if (im.tag == 4)
         {
-            float theta = angleDifference + _totalRotation + _teethStartingAngle;
-            CAShapeLayer *maskLayer = [self maskLayerFor5thPetalWithTheta:[self radiansToDegrees:theta]];
+            CAShapeLayer *maskLayer = [self maskLayerFor5thPetalWithTheta:[self radiansToDegrees:teethRotationAngle]];
             im.layer.mask = maskLayer; 
         }
     }
-//    NSLog(@"%f-> %f:  %f",[self radiansToDegrees:self.wheelStartAngle],[self radiansToDegrees:angleDifference],[self radiansToDegrees:self.totalRotation]);
     self.wheelStartAngle = ang;
     self.totalRotation += angleDifference;
     return YES;
@@ -225,13 +224,6 @@
 
 - (void)endTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event
 {
-//    CGPoint pt = [touch locationInView:self];
-//    float dx = pt.x  - self.container.center.x;
-//	float dy = pt.y  - self.container.center.y;
-//	float ang = atan2(dy,dx);
-//    float angleDifference = ang - self.wheelStartAngle;
-//    _totalRotation += angleDifference;
-//    NSLog(@"_totalRotation: %f",[self radiansToDegrees:_totalRotation]);
 }
 
 - (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
