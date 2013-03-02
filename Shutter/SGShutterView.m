@@ -42,7 +42,8 @@
         _stagesArray = stagesArray;
         _teethStartingAngle = [self degreesToRadians:((float) teethRotationRange.location)];
         _teethRotationFactor = (float)teethRotationRange.length/(float)wheelRotationRange;
-        self.backgroundColor = [UIColor blueColor];
+        UIColor *greyColor = [UIColor colorWithWhite:0.349 alpha:1.000];
+        self.backgroundColor = greyColor;
         [self drawShutter];
     }
     return self;
@@ -92,7 +93,7 @@
     }
     [self addSubview:_container];
     UIImageView *bg = [[UIImageView alloc] initWithFrame:self.frame];
-    bg.image = [UIImage imageNamed:@"frame.png"];
+    bg.image = [UIImage imageNamed:@"frameFull.png"];
     [self addSubview:bg];
 }
 

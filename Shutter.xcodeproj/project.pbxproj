@@ -22,6 +22,7 @@
 		517C09B216DB6733005225FD /* SGTeethView.m in Sources */ = {isa = PBXBuildFile; fileRef = 517C09B116DB6733005225FD /* SGTeethView.m */; };
 		517C09B416DB7040005225FD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 517C09B316DB7040005225FD /* QuartzCore.framework */; };
 		517C09B716DB9D01005225FD /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 517C09B616DB9D01005225FD /* Common.m */; };
+		51EBC90E16E1F7700008111E /* frameFull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51EBC90D16E1F7700008111E /* frameFull@2x.png */; };
 		51EE201216D23D6C008956DF /* teeth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51EE201116D23D6C008956DF /* teeth@2x.png */; };
 		51EE201516D25D06008956DF /* frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51EE201416D25D06008956DF /* frame@2x.png */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		517C09B316DB7040005225FD /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		517C09B516DB9D01005225FD /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		517C09B616DB9D01005225FD /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
+		51EBC90D16E1F7700008111E /* frameFull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frameFull@2x.png"; sourceTree = "<group>"; };
 		51EE201116D23D6C008956DF /* teeth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "teeth@2x.png"; sourceTree = "<group>"; };
 		51EE201416D25D06008956DF /* frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -142,6 +144,7 @@
 		51EE201316D23D71008956DF /* images */ = {
 			isa = PBXGroup;
 			children = (
+				51EBC90D16E1F7700008111E /* frameFull@2x.png */,
 				51EE201416D25D06008956DF /* frame@2x.png */,
 				51EE201116D23D6C008956DF /* teeth@2x.png */,
 			);
@@ -206,6 +209,7 @@
 				5173810B16CE612E00775555 /* ViewController.xib in Resources */,
 				51EE201216D23D6C008956DF /* teeth@2x.png in Resources */,
 				51EE201516D25D06008956DF /* frame@2x.png in Resources */,
+				51EBC90E16E1F7700008111E /* frameFull@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

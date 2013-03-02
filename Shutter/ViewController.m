@@ -25,12 +25,12 @@
     NSArray *stages = @[@"a1",@"b2",@"c3",@"d4",@"e5",@"f6",@"g7",@"h9",@"i10"];
     NSRange teethRotationRange = NSMakeRange(5, 40); // 1)in degrees 2) 0degree closes the aperture completely
     int wheelRotationRange = 360;
-    CGRect shutterFrame = CGRectMake(0, 0, 200, 200);
+    CGRect shutterFrame = CGRectMake(0, 0, 320, 568);
     self.shutter = [[SGShutterView alloc] initWithFrame:shutterFrame
                                      teethRotationRange:teethRotationRange
                                      wheelRotationRange:wheelRotationRange
                                              stageArray:stages];
-    self.shutter.center = CGPointMake(160, 240);
+    self.shutter.center = CGPointMake(160, 284);
     self.shutter.delegate = self;
     [self.view addSubview:self.shutter];
 }

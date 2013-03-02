@@ -19,23 +19,25 @@
     return self;
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-    CGColorRef greyColor = [UIColor lightGrayColor].CGColor;
-    CGColorRef blackColor = [UIColor blackColor].CGColor;
+/* gradient */
+- (void) drawRect:(CGRect)rect {
+    CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
+    CGFloat colors[] =
+    {
+        0.0f, 0.0f, 0.0f, 1.0f,
+        0.2f, 0.2f, 0.2f, 1.0f,
+        0.8f, 0.8f, 0.8f, 1.0f,
+    };
+    CGGradientRef _gradientRef = CGGradientCreateWithColorComponents(rgb, colors, NULL, sizeof(colors) / (sizeof(colors[0]) * 4));
+    CGColorSpaceRelease(rgb);
 
     CGContextRef context = UIGraphicsGetCurrentContext();
+    CGPoint start = rect.origin;
+    start.x = rect.size.width;
+    CGPoint end = CGPointMake(rect.origin.x, rect.size.height);
+    CGContextDrawLinearGradient(context, _gradientRef, start, end, kCGGradientDrawsBeforeStartLocation | kCGGradientDrawsAfterEndLocation);
     
-    // fill with red
-    CGContextSetFillColorWithColor(context, greyColor);
-    CGContextFillRect(context, self.bounds);
-    
-    // stroke with black
-    CGRect paperRect = self.bounds;
-    CGContextSetStrokeColorWithColor(context, blackColor);
-    CGContextSetLineWidth(context, 1.0);
-    CGContextStrokeRect(context, paperRect);
+    [super drawRect:rect];
 }
 
 @end
