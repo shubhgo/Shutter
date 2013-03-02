@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface ViewController ()
+<SGShutterViewDelegate>
 @property (strong, nonatomic) SGShutterView *shutter;
 @end
 
@@ -21,7 +22,7 @@
     [super viewDidLoad];
 	
     /* Shutter View */
-    NSArray *stages = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"9",@"10"];
+    NSArray *stages = @[@"a1",@"b2",@"c3",@"d4",@"e5",@"f6",@"g7",@"h9",@"i10"];
     NSRange teethRotationRange = NSMakeRange(5, 40); // 1)in degrees 2) 0degree closes the aperture completely
     int wheelRotationRange = 360;
     CGRect shutterFrame = CGRectMake(0, 0, 200, 200);
@@ -30,6 +31,7 @@
                                      wheelRotationRange:wheelRotationRange
                                              stageArray:stages];
     self.shutter.center = CGPointMake(160, 240);
+    self.shutter.delegate = self;
     [self.view addSubview:self.shutter];
 }
 
@@ -39,4 +41,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)reachedStage:(NSString *)stageName atIndex:(NSInteger)stageIndex
+{
+    NSLog(@"reachedStage: %@",stageName);
+}
 @end

@@ -224,6 +224,13 @@
 
 - (void)endTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event
 {
+    int numberOfStages = [_stagesArray count];
+    float anglePerStage = (float)_wheelRotationRange/(float)numberOfStages;
+    int stage = (int)([self radiansToDegrees:_totalRotation]/anglePerStage);
+    if ([self.delegate respondsToSelector:@selector(reachedStage:atIndex:)])
+    {
+        [self.delegate reachedStage:[_stagesArray objectAtIndex:stage] atIndex:stage];
+    }
 }
 
 - (CAShapeLayer *)maskLayerFor6thPetalWithTheta:(float)theta
