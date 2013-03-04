@@ -22,4 +22,5 @@
    teethRotationRange:(NSRange)teethRotationRange
    wheelRotationRange:(NSInteger)wheelRotationRange
            stageArray:(NSArray *)stagesArray;
+- (void) addMask;
 @end

@@ -60,6 +60,19 @@
     return self;
 }
 
+- (void) addMask
+{
+    CGMutablePathRef circularPath = CGPathCreateMutable();
+    CGPathMoveToPoint(circularPath, NULL, self.center.x, self.center.y);
+    CGPathAddArc(circularPath, NULL, self.center.x, self.center.y, TEETH_RADIUS, 0, [self degreesToRadians:360.0], YES);
+    CGPathCloseSubpath(circularPath);
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    [maskLayer setPath:circularPath];
+    CGPathRelease(circularPath);
+    self.layer.mask = maskLayer;
+}
+
 - (void) drawShutter
 {
     self.container = [[UIView alloc] initWithFrame:self.frame];
@@ -92,9 +105,6 @@
         _container.userInteractionEnabled = NO;
     }
     [self addSubview:_container];
-    UIImageView *bg = [[UIImageView alloc] initWithFrame:self.frame];
-    bg.image = [UIImage imageNamed:@"frameFull.png"];
-    [self addSubview:bg];
 }
 
 - (CGPoint) positionForTeethAtIndex:(int)index relativeToCenter:(CGPoint) center
