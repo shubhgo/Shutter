@@ -32,6 +32,23 @@
                                              stageArray:stages];
     self.shutter.center = CGPointMake(160, 284);
     self.shutter.delegate = self;
+    
+//    70,194-----250,194
+//    |             |
+//    |             |
+//    70,374-----250,374
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, 70.0f, 194.0f);
+    CGPathAddLineToPoint(path, NULL, 250.0f, 194.0f);
+    CGPathAddLineToPoint(path, NULL, 250.0f, 374.0f);
+    CGPathAddLineToPoint(path, NULL, 70.0f, 374.0f);
+    CGPathCloseSubpath(path);
+        
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    [maskLayer setPath:path];
+    CGPathRelease(path);
+    self.shutter.layer.mask = maskLayer;
     [self.view addSubview:self.shutter];
 }
 
